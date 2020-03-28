@@ -1,0 +1,76 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply plugin: 'maven'
+def buildType = true
+def mavenUrl = "http://" + String.valueOf(maven_ip) + ":8081/repository/globalegrow/"
+def mavenUrlSnapshot = "http://" + String.valueOf(maven_ip) + ":8081/repository/globalegrow-snapshot/"
+def mavenUserName = "longxl"
+def mavenPwd = "longxl123"
+def sdkVersionName = "1.0.0"
+def sdkVersionNameSnapshot = "1.0.0.1-SNAPSHOT"
+def pomName = "multi-languages"
+def pomGroupId = "com.fz.multilanguages"
+def pomArtifactId = "multi-languages-plugin"
+def pomPackaging = "aar"
+//打包doc
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+}
+//打包源码
+task sourceJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+//解决 JavaDoc 中文注释生成失败的问题
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+//编译groovy代码时采用 UTF-8
+tasks.withType(GroovyCompile) {
+    groovyOptions.encoding = "UTF-8"
+}
+//编译JAVA文件时采用UTF-8
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+tasks.withType(ScalaCompile) { scalaCompileOptions.encoding = "UTF-8" }
+artifacts {
+    archives jar
+    archives sourceJar
+    archives javadocJar
+}
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            println "start upload aar build type:" + buildType
+            def ver = sdkVersionName
+            if (buildType) {
+                println "uploadArchives build release"
+                repository(url: mavenUrl) {
+                    authentication(userName: mavenUserName, password: mavenPwd)
+                }
+                ver = sdkVersionName
+            } else {
+                //快照版本
+                println "uploadArchives build beta"
+                snapshotRepository(url: mavenUrlSnapshot) {
+                    authentication(userName: mavenUserName, password: mavenPwd)
+                }
+                ver = sdkVersionNameSnapshot
+            }
+            //pom必需的参数
+            pom.project {
+                name pomName
+                version ver
+                artifactId pomArtifactId
+                groupId pomGroupId
+                packaging pomPackaging
+            }
+            doLast {
+                println "upload aar success build type:" + buildType
+            }
+        }
+    }
+}

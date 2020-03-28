@@ -1,0 +1,74 @@
+import java.util.concurrent.TimeUnit
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+
+    repositories {
+        mavenLocal()
+        maven {
+            url "http://" + String.valueOf(maven_ip) + ":8081/repository/maven-public/"
+        }
+//        mavenLocal()
+//        maven { url "https://jitpack.io" }
+//        maven { url 'https://maven.fabric.io/public' }
+//        maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+//        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+//        google()
+//        maven { url 'https://dl.bintray.com/a10188755550/maven' }
+        maven {
+            url uri('repo')
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.3'
+//        classpath 'com.fz.multilanguages:multi-languages-plugin:1.0.0'
+        classpath 'com.fz.multilanguages.plugin:multi-languages:1.0.0'
+//        classpath 'com.fz.multilanguages:multi-languages:1.0.1-SNAPSHOT'
+//        classpath "com.github.jokar:multi-languages.plugin:0.0.7"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        mavenLocal()
+        maven {
+            url "http://" + String.valueOf(maven_ip) + ":8081/repository/maven-public/"
+        }
+//        mavenLocal()
+//        maven { url "https://jitpack.io" }
+//        maven { url 'https://maven.fabric.io/public' }
+//        maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+//        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+//        google()
+//        maven { url 'https://dl.bintray.com/a10188755550/maven' }
+        maven {
+            url uri('repo')
+        }
+    }
+}
+//SNAPSHOT库不缓存，gradle sync后实时拉取最新
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, TimeUnit.SECONDS
+}
+tasks.withType(Javadoc) {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        links "http://docs.oracle.com/javase/7/docs/api"
+    }
+}
+//编译groovy代码时采用 UTF-8
+tasks.withType(GroovyCompile) {
+    groovyOptions.encoding = "UTF-8"
+}
+//编译JAVA文件时采用UTF-8
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+tasks.withType(ScalaCompile) { scalaCompileOptions.encoding = "UTF-8" }
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
