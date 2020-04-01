@@ -21,7 +21,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.1'
 //        classpath 'com.fz.multilanguages:multi-languages-plugin:1.0.0'
         classpath 'com.fz.multilanguages.plugin:multi-languages:1.0.0'
 //        classpath 'com.fz.multilanguages:multi-languages:1.0.1-SNAPSHOT'
