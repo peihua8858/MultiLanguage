@@ -7,6 +7,9 @@ buildscript {
     repositories {
         mavenLocal()
         maven {
+            url uri('repo')
+        }
+        maven {
             url "http://" + String.valueOf(maven_ip) + ":8081/repository/maven-public/"
         }
 //        mavenLocal()
@@ -16,14 +19,11 @@ buildscript {
 //        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
 //        google()
 //        maven { url 'https://dl.bintray.com/a10188755550/maven' }
-        maven {
-            url uri('repo')
-        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.android.tools.build:gradle:3.6.2'
 //        classpath 'com.fz.multilanguages:multi-languages-plugin:1.0.0'
-        classpath 'com.fz.multilanguages.plugin:multi-languages:1.0.0'
+        classpath 'com.fz.multilanguages:multi-languages-plugin:1.0.0-debug'
 //        classpath 'com.fz.multilanguages:multi-languages:1.0.1-SNAPSHOT'
 //        classpath "com.github.jokar:multi-languages.plugin:0.0.7"
         // NOTE: Do not place your application dependencies here; they belong
@@ -35,6 +35,9 @@ allprojects {
     repositories {
         mavenLocal()
         maven {
+            url uri('repo')
+        }
+        maven {
             url "http://" + String.valueOf(maven_ip) + ":8081/repository/maven-public/"
         }
 //        mavenLocal()
@@ -44,9 +47,6 @@ allprojects {
 //        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
 //        google()
 //        maven { url 'https://dl.bintray.com/a10188755550/maven' }
-        maven {
-            url uri('repo')
-        }
     }
 }
 //SNAPSHOT库不缓存，gradle sync后实时拉取最新

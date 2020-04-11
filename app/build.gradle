@@ -1,5 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'multi-languages'
+repositories {
+    flatDir {
+        dirs 'libs' //this way we can find the .aar file in libs folder
+    }
+    maven {
+        url 'http://download.flutter.io'
+    }
+}
 
 android {
     compileSdkVersion 28
@@ -51,11 +59,23 @@ dependencies {
 //    implementation "com.github.jokar:multi-languages:0.0.7"
     //IMSdk
     implementation 'com.im.sdk:imsdk-androidx:1.1.17'
+    implementation 'com.fz:zf-flutter-module:1.1.5-SNAPSHOT'
 }
 
 multiLanguages {
-    enable = false
+    enable = true
     overwriteClass = ["com.fz.multilanguages.demo.BaseActivity"
                       ,"com.im.sdk.ui.ImBaseActivity"
                       ,"com.fz.multilanguages.demo.app.MultiLanguagesApp"]
+    hookPoint = [
+            "com.fz.multilanguages.demo.FlutterJNI": [
+                    "ensureNotAttachedToNative",
+                    "ensureAttachedToNative"
+            ],
+            "io.flutter.embedding.engine.FlutterJNI": [
+                    "ensureNotAttachedToNative",
+                    "ensureAttachedToNative"
+            ]
+    ]
+    exceptionHandler = ["com.fz.multilanguages.demo.ExceptionUtils": "uploadCatchedException"]
 }

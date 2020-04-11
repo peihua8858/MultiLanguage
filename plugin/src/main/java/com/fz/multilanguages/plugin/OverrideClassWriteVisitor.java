@@ -7,6 +7,7 @@ import org.objectweb.asm.Opcodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,17 +21,29 @@ import java.util.Set;
  */
 public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
     private String superClassName;
-    private String className;
+    private String mClassName;
     private List<String> overwriteClass;
     private ClassWriter classWriter;
     private ILogger logger;
     private static Logger slf4jLogger = LoggerFactory.getLogger("logger");
+    private String exceptionHandleClass;
+    private String exceptionHandleMethod;
+    private Map<String, List<String>> hookPoint;
+    private List<String> hookMethod;
 
-    public OverrideClassWriteVisitor(ClassWriter cv, ILogger logger, List<String> overwriteClass) {
+    public OverrideClassWriteVisitor(ClassWriter cv, ILogger logger, PluginExtensionEntity extension) {
         super(Opcodes.ASM7, cv);
-        this.overwriteClass = overwriteClass;
+        this.overwriteClass = extension.getOverwriteClass();
         this.classWriter = cv;
         this.logger = logger;
+        this.hookPoint = extension.getHookPoint();
+        Map<String, String> exceptionHandler = extension.getExceptionHandler();
+        if (exceptionHandler != null && !exceptionHandler.isEmpty()) {
+            exceptionHandler.entrySet().forEach(entry -> {
+                exceptionHandleClass = entry.getKey().replace(".", "/");
+                exceptionHandleMethod = entry.getValue();
+            });
+        }
     }
 
     @Override
@@ -38,16 +51,33 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
                       String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces);
         superClassName = superName;
-        this.className = name;
+        this.mClassName = name;
+        String className = name.replace("/", ".");
+        hookMethod = isNotNull(hookPoint.get(className));
+    }
+
+    <T> List<T> isNotNull(List<T> t) {
+        if (t == null) {
+            return new ArrayList<>();
+        }
+        return t;
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
                                      String[] exceptions) {
-        if (ConfigsMethod.needAddOrOverride(className, superClassName) && ConfigsMethod.hasMethod(name)) {
+        if (hookMethod.contains(name)) {
+            logger.printlnLog("start override className>" + mClassName + " Method name>" + name);
+            MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
+            if (exceptionHandleClass != null && exceptionHandleMethod != null) {
+                return new AddHandleTryCatchMethodVisitor(mv, mClassName, access, name, descriptor,
+                        exceptionHandleClass, exceptionHandleMethod);
+            }
+            return new AddDynamicTryCatchMethodVisitor(mv, mClassName, access, name, descriptor);
+        } else if (ConfigsMethod.needAddOrOverride(mClassName, superClassName) && ConfigsMethod.hasMethod(name)) {
             try {
                 OverrideMethodVisitor overrideMethodVisitor = ConfigsMethod.OVERRIDE_METHOD_VISITOR.get(name);
-                return overrideMethodVisitor.visitMethod(classWriter, className, superClassName, overwriteClass,
+                return overrideMethodVisitor.visitMethod(classWriter, mClassName, superClassName, overwriteClass,
                         access, name, descriptor, signature, exceptions);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -57,13 +87,13 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
     }
 
     public boolean overrideMethod(String fileName) {
-        if (ConfigsMethod.needAddOrOverride(className, superClassName)) {
+        if (ConfigsMethod.needAddOrOverride(mClassName, superClassName)) {
             logger.printlnLog("start override method to " + fileName);
             Set<Map.Entry<String, OverrideMethodVisitor>> entries = ConfigsMethod.OVERRIDE_METHOD_VISITOR.entrySet();
             for (Map.Entry<String, OverrideMethodVisitor> entry : entries) {
                 OverrideMethodVisitor methodVisitor = entry.getValue();
-                if (methodVisitor.isOverrideMethod(className, superClassName)) {
-                    boolean result = methodVisitor.methodVisitor(classWriter, className, superClassName, fileName);
+                if (methodVisitor.isOverrideMethod(mClassName, superClassName)) {
+                    boolean result = methodVisitor.methodVisitor(classWriter, mClassName, superClassName, fileName);
                     if (result) {
                         logger.printlnLog("override method " + entry.getKey() + " to " + fileName);
                     }
@@ -76,8 +106,8 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
             Set<Map.Entry<String, OverrideMethodVisitor>> addEntries = ConfigsMethod.ADD_METHOD_VISITOR.entrySet();
             for (Map.Entry<String, OverrideMethodVisitor> entry : addEntries) {
                 OverrideMethodVisitor methodVisitor = entry.getValue();
-                if (methodVisitor.isOverrideMethod(className, superClassName)) {
-                    boolean result = methodVisitor.methodVisitor(classWriter, className, superClassName, fileName);
+                if (methodVisitor.isOverrideMethod(mClassName, superClassName)) {
+                    boolean result = methodVisitor.methodVisitor(classWriter, mClassName, superClassName, fileName);
                     if (result) {
                         logger.printlnLog("add method " + entry.getKey() + " to " + fileName);
                     }

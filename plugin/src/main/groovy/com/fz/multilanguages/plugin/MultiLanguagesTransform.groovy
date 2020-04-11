@@ -46,6 +46,9 @@ class MultiLanguagesTransform extends Transform implements ILogger {
     void transform(TransformInvocation transformInvocation) throws TransformException,
             InterruptedException, IOException {
         super.transform(transformInvocation)
+        if (!pluginExtension.enable) {
+            return
+        }
         println("+-----------------------------------------------------------------------------+")
         println("|                     Multi Languages Plugin START                            |")
         println("+-----------------------------------------------------------------------------+")
@@ -98,7 +101,12 @@ class MultiLanguagesTransform extends Transform implements ILogger {
                     def classReader = new ClassReader(file.bytes)
                     FileOutputStream fos = new FileOutputStream(
                             file.parentFile.absolutePath + File.separator + name)
-                    fos.write(ClassWriteVisitor.classWriteVisitor(classReader, this, pluginExtension.overwriteClass, name))
+                    PluginExtensionEntity extension = new PluginExtensionEntity();
+                    extension.setEnable(pluginExtension.enable)
+                    extension.setHookPoint(pluginExtension.hookPoint)
+                    extension.setExceptionHandler(pluginExtension.exceptionHandler)
+                    extension.setOverwriteClass(pluginExtension.overwriteClass)
+                    fos.write(ClassWriteVisitor.classWriteVisitor(classReader, this, extension, name))
                     fos.close()
                 }
             }
@@ -142,7 +150,12 @@ class MultiLanguagesTransform extends Transform implements ILogger {
                     if (checkClassFile(entryName)) {
                         jarOutputStream.putNextEntry(zipEntry)
                         def classReader = new ClassReader(IOUtils.toByteArray(inputStream))
-                        jarOutputStream.write(ClassWriteVisitor.classWriteVisitor(classReader, this, pluginExtension.overwriteClass, entryName))
+                        PluginExtensionEntity extension = new PluginExtensionEntity();
+                        extension.setEnable(pluginExtension.enable)
+                        extension.setHookPoint(pluginExtension.hookPoint)
+                        extension.setExceptionHandler(pluginExtension.exceptionHandler)
+                        extension.setOverwriteClass(pluginExtension.overwriteClass)
+                        jarOutputStream.write(ClassWriteVisitor.classWriteVisitor(classReader, this, extension, entryName))
                     } else {
                         jarOutputStream.putNextEntry(zipEntry)
                         jarOutputStream.write(IOUtils.toByteArray(inputStream))

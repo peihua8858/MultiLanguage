@@ -49,9 +49,11 @@ public class MultiLanguage {
         Configuration configuration = context.getResources().getConfiguration();
         configuration.setLocale(locale);
         configuration.setLocales(new LocaleList(locale));
+        configuration.setLayoutDirection(locale);
         return context.createConfigurationContext(configuration);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static Context updateResourcesLegacy(Context context, Locale locale) {
         Resources resources = context.getResources();
         Configuration configuration = resources.getConfiguration();

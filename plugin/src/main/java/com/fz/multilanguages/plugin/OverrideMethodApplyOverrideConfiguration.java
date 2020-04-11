@@ -33,7 +33,7 @@ public class OverrideMethodApplyOverrideConfiguration extends AbstractOverrideMe
     public boolean methodVisitor(ClassWriter cw, String className, String superClassName, String fileName) {
         if (isOverrideMethod(className, superClassName)) {
             if (ConfigsMethod.isActivity(className, superClassName)) {
-                return callOverrideActivityMethod(cw, className,superClassName, fileName);
+                return callOverrideActivityMethod(cw, className, superClassName, fileName);
             }
         }
         return false;
@@ -42,7 +42,7 @@ public class OverrideMethodApplyOverrideConfiguration extends AbstractOverrideMe
     @Override
     public MethodVisitor visitMethod(ClassWriter classWriter, String className, String superClassName, List<String> overwriteClass,
                                      int access, String name, String descriptor, String signature, String[] exceptions) {
-        if (ConfigsMethod.needAddOrOverride(className, superClassName)) {
+       if (ConfigsMethod.needAddOrOverride(className, superClassName)) {
             if (ConfigsMethod.isAndroidxActivity(superClassName) && equalsMethod(name)) {
                 isDeleteFormerMethod = true;
                 return null;

@@ -18,16 +18,16 @@ public class ClassWriteVisitor {
      *
      * @param classReader
      * @param logger
-     * @param overwriteClass
+     * @param extension
      * @param fileName
      * @author dingpeihua
      * @date 2020/1/12 14:01
      * @version 1.0
      */
-    public static byte[] classWriteVisitor(ClassReader classReader, ILogger logger, List<String> overwriteClass, String fileName) {
+    public static byte[] classWriteVisitor(ClassReader classReader, ILogger logger, PluginExtensionEntity extension, String fileName) {
         ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
         OverrideClassWriteVisitor classWriteVisitor = new OverrideClassWriteVisitor(classWriter, logger,
-                overwriteClass);
+                extension);
         classReader.accept(classWriteVisitor, ClassReader.EXPAND_FRAMES);
         classWriteVisitor.overrideMethod(fileName);
         return classWriter.toByteArray();
