@@ -6,8 +6,4 @@ public class ExceptionUtils {
             e.printStackTrace();
         }
     }
-
-    public static boolean isAttached(FlutterJNI flutterJNI) {
-        return flutterJNI != null && flutterJNI.isAttached();
-    }
 }

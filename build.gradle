@@ -10,7 +10,7 @@ buildscript {
             url uri('repo')
         }
         maven {
-            url "http://" + String.valueOf(maven_ip) + ":8081/repository/maven-public/"
+            url "http://" + String.valueOf(maven_address) + "/repository/maven-public/"
         }
 //        mavenLocal()
 //        maven { url "https://jitpack.io" }
@@ -38,7 +38,7 @@ allprojects {
             url uri('repo')
         }
         maven {
-            url "http://" + String.valueOf(maven_ip) + ":8081/repository/maven-public/"
+            url "http://" + String.valueOf(maven_address) + "/repository/maven-public/"
         }
 //        mavenLocal()
 //        maven { url "https://jitpack.io" }

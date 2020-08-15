@@ -1,8 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply plugin: 'maven'
 def buildType = true
-def mavenUrl = "http://" + String.valueOf(maven_ip) + ":8081/repository/globalegrow/"
-def mavenUrlSnapshot = "http://" + String.valueOf(maven_ip) + ":8081/repository/globalegrow-snapshot/"
+def mavenUrl = "http://" + String.valueOf(maven_address) + "/repository/globalegrow/"
+def mavenUrlSnapshot = "http://" + String.valueOf(maven_address) + "/repository/globalegrow-snapshot/"
 def mavenUserName = "longxl"
 def mavenPwd = "longxl123"
 def sdkVersionName = "1.0.5"

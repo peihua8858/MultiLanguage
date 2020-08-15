@@ -9,7 +9,7 @@ final class ConfigsMethod {
 
     static {
         OVERRIDE_METHOD_VISITOR.put(OverrideMethodAttachBaseContext.OVERRIDE_METHOD, new OverrideMethodAttachBaseContext());
-        OVERRIDE_METHOD_VISITOR.put(OverrideMethodApplyOverrideConfiguration.OVERRIDE_METHOD, new OverrideMethodApplyOverrideConfiguration());
+//        OVERRIDE_METHOD_VISITOR.put(OverrideMethodApplyOverrideConfiguration.OVERRIDE_METHOD, new OverrideMethodApplyOverrideConfiguration());
 //        OVERRIDE_METHOD_VISITOR.put(OverrideMethodGetResources.OVERRIDE_METHOD, new OverrideMethodGetResources());
 //        ADD_METHOD_VISITOR.put(AddChangeLanguageMethodVisitor.ADD_METHOD, new AddChangeLanguageMethodVisitor());
 //        ADD_METHOD_VISITOR.put(AddGetResourcesInternalMethodVisitor.ADD_METHOD, new AddGetResourcesInternalMethodVisitor());

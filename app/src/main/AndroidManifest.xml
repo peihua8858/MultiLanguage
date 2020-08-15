@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <meta-data
+            android:name="com.im.sdk.notify_small_icon"
+            android:resource="@mipmap/im_ic_selected" />
+        <meta-data
+            android:name="com.im.sdk.notification_channel_id"
+            android:value="default" />
         <activity
             android:name=".MainActivity">
             <intent-filter>
