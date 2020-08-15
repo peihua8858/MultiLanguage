@@ -30,6 +30,7 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
     private String exceptionHandleMethod;
     private Map<String, List<String>> hookPoint;
     private List<String> hookMethod;
+    private boolean hasHookMethodClass = false;
 
     public OverrideClassWriteVisitor(ClassWriter cv, ILogger logger, PluginExtensionEntity extension) {
         super(Opcodes.ASM7, cv);
@@ -54,6 +55,11 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
         this.mClassName = name;
         String className = name.replace("/", ".");
         hookMethod = isNotNull(hookPoint.get(className));
+        /**
+         * 如果参数为*则表示所以方法增加try catch
+         */
+        hasHookMethodClass = hookMethod.size() == 1 &&
+                hookMethod.contains("*") && hookPoint.containsKey(className);
     }
 
     <T> List<T> isNotNull(List<T> t) {
@@ -66,8 +72,13 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
                                      String[] exceptions) {
-        if (hookMethod.contains(name)) {
-            logger.printlnLog("start override className>" + mClassName + " Method name>" + name);
+        if (access == Opcodes.ACC_NATIVE) {
+            return super.visitMethod(access, name, descriptor, signature, exceptions);
+        }
+        logger.printlnLog("start visitMethod className>" + mClassName + " Method name>"
+                + name + ",hasHookMethodClass:" + hasHookMethodClass);
+        if ((hookMethod.contains(name) || hasHookMethodClass)) {
+            logger.printlnLog("start hook className>" + mClassName + " Method name>" + name);
             MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
             if (exceptionHandleClass != null && exceptionHandleMethod != null) {
                 return new AddHandleTryCatchMethodVisitor(mv, mClassName, access, name, descriptor,

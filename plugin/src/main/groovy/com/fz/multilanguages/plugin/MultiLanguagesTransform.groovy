@@ -16,8 +16,6 @@ import java.util.zip.ZipEntry
 
 class MultiLanguagesTransform extends Transform implements ILogger {
     private PluginExtension pluginExtension
-    def static slf4jLogger = LoggerFactory.getLogger('logger')
-
     MultiLanguagesTransform(PluginExtension pluginExtension) {
         this.pluginExtension = pluginExtension
     }

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'multi-languages'
+//apply plugin: 'multi-languages'
 repositories {
     flatDir {
         dirs 'libs' //this way we can find the .aar file in libs folder
@@ -17,6 +17,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     dexOptions {
@@ -62,20 +63,21 @@ dependencies {
     implementation 'com.fz:zf-flutter-module:1.1.5-SNAPSHOT'
 }
 
-multiLanguages {
-    enable = true
-    overwriteClass = ["com.fz.multilanguages.demo.BaseActivity"
-                      ,"com.im.sdk.ui.ImBaseActivity"
-                      ,"com.fz.multilanguages.demo.app.MultiLanguagesApp"]
-    hookPoint = [
-            "com.fz.multilanguages.demo.FlutterJNI": [
-                    "ensureNotAttachedToNative",
-                    "ensureAttachedToNative"
-            ],
-            "io.flutter.embedding.engine.FlutterJNI": [
-                    "ensureNotAttachedToNative",
-                    "ensureAttachedToNative"
-            ]
-    ]
-    exceptionHandler = ["com.fz.multilanguages.demo.ExceptionUtils": "uploadCatchedException"]
-}
+//multiLanguages {
+//    enable = true
+//    overwriteClass = ["com.fz.multilanguages.demo.BaseActivity"
+//                      ,"com.im.sdk.ui.ImBaseActivity"
+//                      ,"com.fz.multilanguages.demo.app.MultiLanguagesApp"]
+//    hookPoint = [
+//            "com.fz.multilanguages.demo.FlutterJNI": [
+//                    "ensureNotAttachedToNative",
+//                    "ensureAttachedToNative"
+//            ],
+//            "io.flutter.embedding.engine.FlutterJNI": [
+//                    "*"
+////                    "ensureNotAttachedToNative",
+////                    "ensureAttachedToNative"
+//            ]
+//    ]
+//    exceptionHandler = ["com.fz.multilanguages.demo.ExceptionUtils": "uploadCatchedException"]
+//}
