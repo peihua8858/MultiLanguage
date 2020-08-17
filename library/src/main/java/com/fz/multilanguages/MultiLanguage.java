@@ -63,7 +63,6 @@ public class MultiLanguage {
         return context;
     }
 
-
     /**
      * 设置语言类型
      */
@@ -75,11 +74,9 @@ public class MultiLanguage {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             LocaleList localeList = new LocaleList(locale);
             config.setLocales(localeList);
-            context.getApplicationContext().createConfigurationContext(config);
         }
         resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
-
 
     /**
      * @param context

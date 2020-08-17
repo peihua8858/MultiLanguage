@@ -10,13 +10,14 @@
 1.1.0版本支持增量编译
 - 支持AndroidX
 - 支持kotlin
+- 解决appcompat 1.2.0切换语言无效的问题
 - **不支持Instant Run**
 
 ### **使用**
 
 - 引入gradle plugin
     ```
-    classpath 'com.fz.multilanguages:multi-languages-plugin:<latest-version>'
+    classpath 'com.fz.multilanguages:multi-languages-plugin:1.1.0'
     ```
 - app ```buidle.gradle``` 文件引入plugin
     ```
@@ -33,7 +34,7 @@
     ```
 - 导入```Library```
     ```
-    implementation 'com.fz.multilanguages:multi-languages-plugin:<latest-version>'
+    implementation 'com.fz.multilanguages:multi-languages:1.0.6'
     ```
 
 - application init
