@@ -7,21 +7,49 @@ import java.util.Map;
 
 public class PluginExtensionEntity {
     private boolean enable = true;
+    private boolean enableService = true;
+    private boolean enableIntentService = true;
+    private boolean enableApplication = true;
     private List<String> overwriteClass = new ArrayList<>();
     private Map<String, List<String>> hookPoint = new HashMap<>();
     private Map<String, String> exceptionHandler = new HashMap<>();
 
-    boolean getEnable() {
+    public boolean isEnable() {
         return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public boolean isEnableService() {
+        return enableService;
+    }
+
+    public void setEnableService(boolean enableService) {
+        this.enableService = enableService;
+    }
+
+    public boolean isEnableIntentService() {
+        return enableIntentService;
+    }
+
+    public void setEnableIntentService(boolean enableIntentService) {
+        this.enableIntentService = enableIntentService;
+    }
+
+    public boolean isEnableApplication() {
+        return enableApplication;
+    }
+
+    public void setEnableApplication(boolean enableApplication) {
+        this.enableApplication = enableApplication;
     }
 
     List<String> getOverwriteClass() {
         return overwriteClass;
     }
 
-    public void setEnable(boolean enable) {
-        this.enable = enable;
-    }
 
     public void setOverwriteClass(List<String> overwriteClass) {
         this.overwriteClass = overwriteClass;
@@ -45,8 +73,11 @@ public class PluginExtensionEntity {
 
     @Override
     public String toString() {
-        return "PluginExtension{" +
+        return "PluginExtensionEntity{" +
                 "enable=" + enable +
+                ", enableService=" + enableService +
+                ", enableIntentService=" + enableIntentService +
+                ", enableApplication=" + enableApplication +
                 ", overwriteClass=" + overwriteClass +
                 ", hookPoint=" + hookPoint +
                 ", exceptionHandler=" + exceptionHandler +

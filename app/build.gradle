@@ -55,10 +55,11 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
-    implementation project(':library')
+//    implementation project(':library')
 //    implementation "com.github.jokar:multi-languages:0.0.7"
     //IMSdk
     implementation 'com.im.sdk:imsdk-androidx:1.1.20'
+    implementation "com.facebook.android:facebook-android-sdk:6.1.0"
 }
 
 multiLanguages {

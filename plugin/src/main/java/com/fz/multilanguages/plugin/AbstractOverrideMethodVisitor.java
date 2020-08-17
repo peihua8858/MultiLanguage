@@ -19,7 +19,7 @@ public abstract class AbstractOverrideMethodVisitor implements OverrideMethodVis
     @Override
     public MethodVisitor visitMethod(ClassWriter classWriter, String className, String superClassName, List<String> overwriteClass, int access, String name, String descriptor, String signature, String[] exceptions) {
         this.methodName = name;
-        if (equalsMethod(name) && ConfigsMethod.needAddOrOverride(className, superClassName)) {
+        if (equalsMethod(name) /*&& ConfigsMethod.needAddOrOverride(className, superClassName)*/) {
             if (ConfigsMethod.isOverwriteAttachMethod(overwriteClass, className)) {
                 isDeleteFormerMethod = true;
                 //删除原有 attachBaseContext 方法

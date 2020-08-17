@@ -41,11 +41,11 @@ final class ConfigsMethod {
      *
      * @return
      */
-    public static boolean needAddOrOverride(String className, String superClassName) {
+    public static boolean needAddOrOverride(String className, String superClassName, PluginExtensionEntity extension) {
         return isActivity(className, superClassName)
-                || isService(className, superClassName)
-                || isIntentService(className, superClassName)
-                || isApplication(className, superClassName);
+                || (isService(className, superClassName) && extension.isEnableService())
+                || (isIntentService(className, superClassName) && extension.isEnableIntentService())
+                || (isApplication(className, superClassName) && extension.isEnableApplication());
     }
 
     /**

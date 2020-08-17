@@ -13,7 +13,7 @@ class MultiLanguagesPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.dependencies {
-//            implementation 'com.fz.multilanguages:multi-languages:1.0.5'
+            implementation 'com.fz.multilanguages:multi-languages:1.0.6'
         }
         //注册plugin参数插件
         project.extensions.create(PLUGIN_NAME, PluginExtension)

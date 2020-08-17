@@ -2,12 +2,10 @@ package com.fz.multilanguages.plugin
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.google.common.io.Files
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
 import org.objectweb.asm.ClassReader
-import org.slf4j.LoggerFactory
 
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
@@ -16,6 +14,7 @@ import java.util.zip.ZipEntry
 
 class MultiLanguagesTransform extends Transform implements ILogger {
     private PluginExtension pluginExtension
+
     MultiLanguagesTransform(PluginExtension pluginExtension) {
         this.pluginExtension = pluginExtension
     }
@@ -99,12 +98,15 @@ class MultiLanguagesTransform extends Transform implements ILogger {
                     def classReader = new ClassReader(file.bytes)
                     FileOutputStream fos = new FileOutputStream(
                             file.parentFile.absolutePath + File.separator + name)
-                    PluginExtensionEntity extension = new PluginExtensionEntity();
-                    extension.setEnable(pluginExtension.enable)
-                    extension.setHookPoint(pluginExtension.hookPoint)
-                    extension.setExceptionHandler(pluginExtension.exceptionHandler)
-                    extension.setOverwriteClass(pluginExtension.overwriteClass)
-                    fos.write(ClassWriteVisitor.classWriteVisitor(classReader, this, extension, name))
+//                        PluginExtensionEntity extension = new PluginExtensionEntity()
+//                        extension.setEnable(pluginExtension.enable)
+//                        extension.setHookPoint(pluginExtension.hookPoint)
+//                        extension.setExceptionHandler(pluginExtension.exceptionHandler)
+//                        extension.setOverwriteClass(pluginExtension.overwriteClass)
+//                        extension.setAttachApplication(pluginExtension.attachApplication)
+//                        extension.setAttachIntentService(pluginExtension.attachIntentService)
+//                        extension.setAttachService(pluginExtension.attachService)
+                    fos.write(ClassWriteVisitor.classWriteVisitor(classReader, this, createProperties(), name))
                     fos.close()
                 }
             }
@@ -116,6 +118,17 @@ class MultiLanguagesTransform extends Transform implements ILogger {
         FileUtils.copyDirectory(directoryInput.file, dest)
     }
 
+    PluginExtensionEntity createProperties() {
+        PluginExtensionEntity extension = new PluginExtensionEntity()
+        extension.setEnable(pluginExtension.enable)
+        extension.setHookPoint(pluginExtension.hookPoint)
+        extension.setExceptionHandler(pluginExtension.exceptionHandler)
+        extension.setOverwriteClass(pluginExtension.overwriteClass)
+        extension.setEnableApplication(pluginExtension.enableApplication)
+        extension.setEnableIntentService(pluginExtension.enableIntentService)
+        extension.setEnableService(pluginExtension.enableService)
+        return extension
+    }
     /**
      * 处理JarInput
      * @param jarInput
@@ -148,12 +161,15 @@ class MultiLanguagesTransform extends Transform implements ILogger {
                     if (checkClassFile(entryName)) {
                         jarOutputStream.putNextEntry(zipEntry)
                         def classReader = new ClassReader(IOUtils.toByteArray(inputStream))
-                        PluginExtensionEntity extension = new PluginExtensionEntity();
-                        extension.setEnable(pluginExtension.enable)
-                        extension.setHookPoint(pluginExtension.hookPoint)
-                        extension.setExceptionHandler(pluginExtension.exceptionHandler)
-                        extension.setOverwriteClass(pluginExtension.overwriteClass)
-                        jarOutputStream.write(ClassWriteVisitor.classWriteVisitor(classReader, this, extension, entryName))
+//                        PluginExtensionEntity extension = new PluginExtensionEntity()
+//                        extension.setEnable(pluginExtension.enable)
+//                        extension.setHookPoint(pluginExtension.hookPoint)
+//                        extension.setExceptionHandler(pluginExtension.exceptionHandler)
+//                        extension.setOverwriteClass(pluginExtension.overwriteClass)
+//                        extension.setAttachApplication(pluginExtension.attachApplication)
+//                        extension.setAttachIntentService(pluginExtension.attachIntentService)
+//                        extension.setAttachService(pluginExtension.attachService)
+                        jarOutputStream.write(ClassWriteVisitor.classWriteVisitor(classReader, this, createProperties(), entryName))
                     } else {
                         jarOutputStream.putNextEntry(zipEntry)
                         jarOutputStream.write(IOUtils.toByteArray(inputStream))

@@ -31,9 +31,11 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
     private Map<String, List<String>> hookPoint;
     private List<String> hookMethod;
     private boolean hasHookMethodClass = false;
+    private PluginExtensionEntity extension;
 
     public OverrideClassWriteVisitor(ClassWriter cv, ILogger logger, PluginExtensionEntity extension) {
         super(Opcodes.ASM7, cv);
+        this.extension = extension;
         this.overwriteClass = extension.getOverwriteClass();
         this.classWriter = cv;
         this.logger = logger;
@@ -85,7 +87,7 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
                         exceptionHandleClass, exceptionHandleMethod);
             }
             return new AddDynamicTryCatchMethodVisitor(mv, mClassName, access, name, descriptor);
-        } else if (ConfigsMethod.needAddOrOverride(mClassName, superClassName) && ConfigsMethod.hasMethod(name)) {
+        } else if (ConfigsMethod.needAddOrOverride(mClassName, superClassName, extension) && ConfigsMethod.hasMethod(name)) {
             try {
                 OverrideMethodVisitor overrideMethodVisitor = ConfigsMethod.OVERRIDE_METHOD_VISITOR.get(name);
                 return overrideMethodVisitor.visitMethod(classWriter, mClassName, superClassName, overwriteClass,
@@ -98,7 +100,7 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
     }
 
     public boolean overrideMethod(String fileName) {
-        if (ConfigsMethod.needAddOrOverride(mClassName, superClassName)) {
+        if (ConfigsMethod.needAddOrOverride(mClassName, superClassName, extension)) {
             logger.printlnLog("start override method to " + fileName);
             Set<Map.Entry<String, OverrideMethodVisitor>> entries = ConfigsMethod.OVERRIDE_METHOD_VISITOR.entrySet();
             for (Map.Entry<String, OverrideMethodVisitor> entry : entries) {
