@@ -6,7 +6,7 @@ def mavenUrlSnapshot = "http://" + String.valueOf(maven_address) + "/repository/
 def mavenUserName = "longxl"
 def mavenPwd = "longxl123"
 def sdkVersionName = "1.1.0"
-def sdkVersionNameSnapshot = "1.0.6-SNAPSHOT"
+def sdkVersionNameSnapshot = "1.0.7-SNAPSHOT"
 def pomName = "multi-languages"
 def pomGroupId = "com.fz.multilanguages"
 def pomArtifactId = "multi-languages-plugin"
@@ -26,7 +26,18 @@ tasks.withType(Javadoc) {
     options.addStringOption('Xdoclint:none', '-quiet')
     options.addStringOption('encoding', 'UTF-8')
     options.addStringOption('charSet', 'UTF-8')
+    options.encoding = "UTF-8"
 }
+//javadoc {
+//    options{
+//        encoding "UTF-8"
+//        charSet 'UTF-8'
+//        author true
+//        version true
+//        links "http://docs.oracle.com/javase/7/docs/api"
+//        title "MultiLanguages"
+//    }
+//}
 //编译groovy代码时采用 UTF-8
 tasks.withType(GroovyCompile) {
     groovyOptions.encoding = "UTF-8"
