@@ -12,13 +12,6 @@ buildscript {
         maven {
             url "http://" + String.valueOf(maven_address) + "/repository/maven-public/"
         }
-//        mavenLocal()
-//        maven { url "https://jitpack.io" }
-//        maven { url 'https://maven.fabric.io/public' }
-//        maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
-//        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
-//        google()
-//        maven { url 'https://dl.bintray.com/a10188755550/maven' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.1'
@@ -38,13 +31,6 @@ allprojects {
         maven {
             url "http://" + String.valueOf(maven_address) + "/repository/maven-public/"
         }
-//        mavenLocal()
-//        maven { url "https://jitpack.io" }
-//        maven { url 'https://maven.fabric.io/public' }
-//        maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
-//        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
-//        google()
-//        maven { url 'https://dl.bintray.com/a10188755550/maven' }
     }
 }
 //SNAPSHOT库不缓存，gradle sync后实时拉取最新

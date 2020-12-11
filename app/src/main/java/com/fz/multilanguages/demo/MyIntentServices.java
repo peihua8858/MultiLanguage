@@ -28,6 +28,6 @@ public class MyIntentServices extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        Toast.makeText(getApplicationContext(), getString(R.string.intent_service_create), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.intent_service_create), Toast.LENGTH_SHORT).show();
     }
 }

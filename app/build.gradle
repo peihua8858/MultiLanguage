@@ -17,11 +17,11 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     dexOptions {
-        preDexLibraries true
         maxProcessCount 8
         // 打开dex增量编译
         dexInProcess true
@@ -53,13 +53,14 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.13.1'
 //    implementation project(':library')
 //    implementation "com.github.jokar:multi-languages:0.0.7"
     //IMSdk
     implementation 'com.im.sdk:imsdk-androidx:1.1.20'
-    implementation "com.facebook.android:facebook-android-sdk:6.1.0"
+    implementation "com.facebook.android:facebook-android-sdk:7.1.0"
 }
 
 multiLanguages {
@@ -67,15 +68,15 @@ multiLanguages {
     overwriteClass = ["com.fz.multilanguages.demo.BaseActivity"
                       ,"com.im.sdk.ui.ImBaseActivity"
                       ,"com.fz.multilanguages.demo.app.MultiLanguagesApp"]
-//    hookPoint = [
-//            "com.fz.multilanguages.demo.FlutterJNI": [
-//                    "ensureNotAttachedToNative",
-//                    "ensureAttachedToNative"
-//            ],
-//            "io.flutter.embedding.engine.FlutterJNI": [
-//                    "ensureNotAttachedToNative",
-//                    "ensureAttachedToNative"
-//            ]
-//    ]
+    hookPoint = [
+            "com.fz.multilanguages.demo.SettingActivity": [
+                    "selectLanguage",
+                    "enter",
+                    "setClick"
+            ],
+            "com.fz.multilanguages.demo.BaseActivity": [
+                    "clickItem","test1"
+            ]
+    ]
 //    exceptionHandler = ["com.fz.multilanguages.demo.ExceptionUtils": "uploadCatchedException"]
 }

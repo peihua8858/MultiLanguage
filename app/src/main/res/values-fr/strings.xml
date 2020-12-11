@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">multi-langue</string>
+
+    <string name="value1">Bonjour le monde</string>
+    <string name="btn1_title">Ouvrir une nouvelle page</string>
+    <string name="btn2_title">Créez-en un nouveau IntentService</string>
+    <string name="btn3_title">Ouvrez la page des paramètres</string>
+    <string name="btn4_title">Créez-en un nouveau Service</string>
+    <string name="btn5_title">Ouvrir la page de discussion</string>
+    <string name="activity2_title">Ceci est une nouvelle page</string>
+    <string name="setting_activity_title">Ceci est la page des paramètres</string>
+
+    <string name="system_language">Langue système actuelle: %1$s</string>
+    <string name="user_select_language">Current user Sélection Language: %s</string>
+    <string name="tv3_value">Paramètres de code text</string>
+
+    <string name="service_create">Création service</string>
+    <string name="intent_service_create">Création IntentService</string>
+
+    <string name="language_cn">中文</string>
+    <string name="language_en">ENGLISH</string>
+    <string name="language_auto">Automatique</string>
+    <string name="language_traditional">Français</string>
+
+    <string name="language_select">Langue actuellement sélectionnée:  %s</string>
+</resources>

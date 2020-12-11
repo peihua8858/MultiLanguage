@@ -26,10 +26,9 @@ public class ClassWriteVisitor {
      */
     public static byte[] classWriteVisitor(ClassReader classReader, ILogger logger, PluginExtensionEntity extension, String fileName) {
         ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
-        OverrideClassWriteVisitor classWriteVisitor = new OverrideClassWriteVisitor(classWriter, logger,
+        OverrideClassWriteVisitor classWriteVisitor = new OverrideClassWriteVisitor(classWriter, fileName,logger,
                 extension);
         classReader.accept(classWriteVisitor, ClassReader.EXPAND_FRAMES);
-        classWriteVisitor.overrideMethod(fileName);
         return classWriter.toByteArray();
     }
 }

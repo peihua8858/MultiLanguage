@@ -4,19 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 
 final class ConfigsMethod {
-    public final static HashMap<String, OverrideMethodVisitor> OVERRIDE_METHOD_VISITOR = new HashMap<>();
-    public final static HashMap<String, OverrideMethodVisitor> ADD_METHOD_VISITOR = new HashMap<>();
+    public final static HashMap<String, Class<? extends OverrideMethodVisitor>> METHOD_VISITOR = new HashMap<>();
 
     static {
-        OVERRIDE_METHOD_VISITOR.put(OverrideMethodAttachBaseContext.OVERRIDE_METHOD, new OverrideMethodAttachBaseContext());
-//        OVERRIDE_METHOD_VISITOR.put(OverrideMethodApplyOverrideConfiguration.OVERRIDE_METHOD, new OverrideMethodApplyOverrideConfiguration());
-//        OVERRIDE_METHOD_VISITOR.put(OverrideMethodGetResources.OVERRIDE_METHOD, new OverrideMethodGetResources());
-//        ADD_METHOD_VISITOR.put(AddChangeLanguageMethodVisitor.ADD_METHOD, new AddChangeLanguageMethodVisitor());
-//        ADD_METHOD_VISITOR.put(AddGetResourcesInternalMethodVisitor.ADD_METHOD, new AddGetResourcesInternalMethodVisitor());
-    }
-
-    public static boolean hasMethod(String methodName) {
-        return OVERRIDE_METHOD_VISITOR.containsKey(methodName);
+        METHOD_VISITOR.put(OverrideMethodAttachBaseContext.OVERRIDE_METHOD, OverrideMethodAttachBaseContext.class);
+//        METHOD_VISITOR.put(OverrideMethodApplyOverrideConfiguration.OVERRIDE_METHOD, OverrideMethodApplyOverrideConfiguration.class);
+//        METHOD_VISITOR.put(OverrideMethodGetResources.OVERRIDE_METHOD, new OverrideMethodGetResources.class);
+//        METHOD_VISITOR.put(AddChangeLanguageMethodVisitor.ADD_METHOD, new AddChangeLanguageMethodVisitor.class);
+//        METHOD_VISITOR.put(AddGetResourcesInternalMethodVisitor.ADD_METHOD, new AddGetResourcesInternalMethodVisitor.class);
     }
 
     /**

@@ -20,6 +20,7 @@ public class OverrideMethodAttachBaseContext extends AbstractOverrideMethodVisit
         return OVERRIDE_METHOD.equals(methodName);
     }
 
+
     @Override
     public boolean methodVisitor(ClassWriter cw, String className, String superClassName, String fileName) {
         if (isOverrideMethod(className, superClassName)) {
@@ -143,7 +144,7 @@ public class OverrideMethodAttachBaseContext extends AbstractOverrideMethodVisit
         methodVisitor.visitLineNumber(19, label6);
         methodVisitor.visitVarInsn(ALOAD, 0);
         methodVisitor.visitVarInsn(ALOAD, 2);
-        methodVisitor.visitMethodInsn(INVOKESPECIAL, superClassName /*"androidx/appcompat/app/AppCompatActivity"*/, "attachBaseContext", "(Landroid/content/Context;)V", false);
+        methodVisitor.visitMethodInsn(INVOKESPECIAL, superClassName , "attachBaseContext", "(Landroid/content/Context;)V", false);
         methodVisitor.visitLabel(label0);
         methodVisitor.visitLineNumber(21, label0);
         methodVisitor.visitVarInsn(ALOAD, 2);
@@ -166,7 +167,7 @@ public class OverrideMethodAttachBaseContext extends AbstractOverrideMethodVisit
         methodVisitor.visitLineNumber(24, label9);
         methodVisitor.visitVarInsn(ALOAD, 0);
         methodVisitor.visitVarInsn(ALOAD, 4);
-        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, superClassName/*"androidx/appcompat/app/AppCompatActivity"*/, "applyOverrideConfiguration", "(Landroid/content/res/Configuration;)V", false);
+        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, superClassName, "applyOverrideConfiguration", "(Landroid/content/res/Configuration;)V", false);
         methodVisitor.visitLabel(label1);
         methodVisitor.visitLineNumber(25, label1);
         methodVisitor.visitInsn(RETURN);
@@ -175,7 +176,7 @@ public class OverrideMethodAttachBaseContext extends AbstractOverrideMethodVisit
         methodVisitor.visitFrame(F_APPEND, 3, new Object[]{"android/content/Context", "android/content/res/Resources", "android/content/res/Configuration"}, 0, null);
         methodVisitor.visitVarInsn(ALOAD, 0);
         methodVisitor.visitVarInsn(ALOAD, 4);
-        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, superClassName/*"androidx/appcompat/app/AppCompatActivity"*/, "applyOverrideConfiguration", "(Landroid/content/res/Configuration;)V", false);
+        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, superClassName, "applyOverrideConfiguration", "(Landroid/content/res/Configuration;)V", false);
         Label label10 = new Label();
         methodVisitor.visitLabel(label10);
         methodVisitor.visitLineNumber(28, label10);
@@ -190,7 +191,7 @@ public class OverrideMethodAttachBaseContext extends AbstractOverrideMethodVisit
         methodVisitor.visitJumpInsn(GOTO, label11);
         methodVisitor.visitLabel(label2);
         methodVisitor.visitLineNumber(29, label2);
-        methodVisitor.visitFrame(F_FULL, 3, new Object[]{superClassName/*"androidx/appcompat/app/AppCompatActivity"*/, "android/content/Context", "android/content/Context"}, 1, new Object[]{"java/lang/Exception"});
+        methodVisitor.visitFrame(F_FULL, 3, new Object[]{superClassName, "android/content/Context", "android/content/Context"}, 1, new Object[]{"java/lang/Exception"});
         methodVisitor.visitVarInsn(ASTORE, 3);
         methodVisitor.visitLabel(label11);
         methodVisitor.visitLineNumber(31, label11);

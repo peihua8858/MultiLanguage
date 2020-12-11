@@ -16,7 +16,7 @@ public class MainActivity extends BaseActivity {
     private Button startNewActivity;
     private Button startNewIntentService;
     private Button startSettingActivity;
-    private Button startNewService,startNewIm;
+    private Button startNewService, startNewIm;
     //
     private TextView tvSystemLanguage;
     private TextView tvUserSelectLanguage;
@@ -30,6 +30,7 @@ public class MainActivity extends BaseActivity {
         initView();
         //
         setValue();
+        clickItem(startNewActivity);
     }
 
     private void initView() {
@@ -44,55 +45,36 @@ public class MainActivity extends BaseActivity {
         tvValue = findViewById(R.id.tv_3);
         tvValue2 = findViewById(R.id.tv_4);
         //
-        startNewActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SecondActivity.enter(MainActivity.this);
-            }
-        });
+        startNewActivity.setOnClickListener(v -> SecondActivity.enter(MainActivity.this));
         //
-        startSettingActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SettingActivity.enter(MainActivity.this);
-            }
-        });
+        startSettingActivity.setOnClickListener(v -> SettingActivity.enter(MainActivity.this));
 
 
-        startNewIntentService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MyIntentServices.class);
-                startService(intent);
-            }
+        startNewIntentService.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MyIntentServices.class);
+            startService(intent);
         });
 
-        startNewService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MyService.class);
-                startService(intent);
-            }
+        startNewService.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MyService.class);
+            startService(intent);
         });
-        startNewIm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    IMSdk.create(MainActivity.this)
-                            .setEmail("ding@qq.com")
-                            .setNickName("ding")
-                            .setWebSiteId("58cb59bfcea4a6b42ab46c04")
-                            .setLogEnabled(true)
-                            .setRelease(false)
-                            .setCountryCode("us")
-                            .setLanguage("en")
-                            .setWebUrlLoadingView((context1, title, url) -> {
-                                return true;
-                            })
-                            .startup();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        startNewIm.setOnClickListener(v -> {
+            try {
+                IMSdk.create(MainActivity.this)
+                        .setEmail("ding@qq.com")
+                        .setNickName("ding")
+                        .setWebSiteId("58cb59bfcea4a6b42ab46c04")
+                        .setLogEnabled(true)
+                        .setRelease(false)
+                        .setCountryCode("us")
+                        .setLanguage("en")
+                        .setWebUrlLoadingView((context1, title, url) -> {
+                            return true;
+                        })
+                        .startup();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

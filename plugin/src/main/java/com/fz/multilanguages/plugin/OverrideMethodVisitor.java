@@ -14,6 +14,8 @@ import java.util.List;
  * @date 2020/1/10 9:30
  */
 public interface OverrideMethodVisitor {
+    void setNeedAddMethod(boolean isNeedMethod);
+
     /**
      * 重写方法
      *
@@ -53,4 +55,5 @@ public interface OverrideMethodVisitor {
     String getMethod();
 
     boolean isOverrideMethod(String className, String superClassName);
+
 }

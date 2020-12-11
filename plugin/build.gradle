@@ -15,5 +15,5 @@ compileJava {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
-apply from: "push_maven.gradle"
-//apply from: "push_local_maven.gradle"
+//apply from: "push_maven.gradle"
+apply from: "push_local_maven.gradle"

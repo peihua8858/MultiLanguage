@@ -49,7 +49,7 @@ public class LocalManageUtil {
             case 1:
                 return Locale.CHINA;
             case 2:
-                return Locale.TAIWAN;
+                return Locale.FRANCE;
             case 3:
             default:
                 return Locale.ENGLISH;

@@ -4,6 +4,7 @@ import org.objectweb.asm.Handle;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.AdviceAdapter;
 
 import java.util.Map;
@@ -23,6 +24,7 @@ public class AddHandleTryCatchMethodVisitor extends AdviceAdapter {
     private Label l2;
     private String exceptionHandleClass;
     private String exceptionHandleMethod;
+    final Type returnType;
 
     public AddHandleTryCatchMethodVisitor(MethodVisitor mv, String className, final int access,
                                           final String methodName,
@@ -34,31 +36,36 @@ public class AddHandleTryCatchMethodVisitor extends AdviceAdapter {
         this.className = className;
         this.exceptionHandleClass = exceptionHandleClass;
         this.exceptionHandleMethod = exceptionHandleMethod;
+        returnType = Type.getReturnType(descriptor);
     }
 
     @Override
     protected void onMethodEnter() {
         super.onMethodEnter();
-        Label l0 = new Label();
-        l1 = new Label();
-        l2 = new Label();
-        mv.visitTryCatchBlock(l0, l1, l2, "java/lang/Throwable");
-        mv.visitLabel(l0);
+        if (returnType == Type.VOID_TYPE) {
+            Label l0 = new Label();
+            l1 = new Label();
+            l2 = new Label();
+            mv.visitTryCatchBlock(l0, l1, l2, "java/lang/Throwable");
+            mv.visitLabel(l0);
+        }
     }
 
     @Override
     protected void onMethodExit(int i) {
         super.onMethodExit(i);
-        mv.visitLabel(l1);
-        Label l3 = new Label();
-        mv.visitJumpInsn(GOTO, l3);
-        mv.visitLabel(l2);
-        mv.visitVarInsn(ASTORE, 1);
-        if (exceptionHandleClass != null && exceptionHandleMethod != null) {
-            mv.visitVarInsn(ALOAD, 1);
-            mv.visitMethodInsn(INVOKESTATIC, exceptionHandleClass,
-                    exceptionHandleMethod, "(Ljava/lang/Throwable;)V", false);
+        if (returnType == Type.VOID_TYPE) {
+            mv.visitLabel(l1);
+            Label l3 = new Label();
+            mv.visitJumpInsn(GOTO, l3);
+            mv.visitLabel(l2);
+            mv.visitVarInsn(ASTORE, 1);
+            if (exceptionHandleClass != null && exceptionHandleMethod != null) {
+                mv.visitVarInsn(ALOAD, 1);
+                mv.visitMethodInsn(INVOKESTATIC, exceptionHandleClass,
+                        exceptionHandleMethod, "(Ljava/lang/Throwable;)V", false);
+            }
+            mv.visitLabel(l3);
         }
-        mv.visitLabel(l3);
     }
 }

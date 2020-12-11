@@ -22,7 +22,6 @@ public class SettingActivity extends BaseActivity {
         mUserSelect = findViewById(R.id.tv_user_select);
         mUserSelect.setText(getString(R.string.user_select_language,
                 LocalManageUtil.getSelectLanguage(this)));
-        //
         setClick();
     }
 
@@ -38,32 +37,12 @@ public class SettingActivity extends BaseActivity {
 
     private void setClick() {
         //跟随系统
-        findViewById(R.id.btn_auto).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectLanguage(0);
-            }
-        });
+        findViewById(R.id.btn_auto).setOnClickListener(v -> selectLanguage(0));
         //简体中文
-        findViewById(R.id.btn_cn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectLanguage(1);
-            }
-        });
+        findViewById(R.id.btn_cn).setOnClickListener(v -> selectLanguage(1));
         //繁体中文
-        findViewById(R.id.btn_traditional).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectLanguage(2);
-            }
-        });
+        findViewById(R.id.btn_traditional).setOnClickListener(v -> selectLanguage(2));
         //english
-        findViewById(R.id.btn_en).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectLanguage(3);
-            }
-        });
+        findViewById(R.id.btn_en).setOnClickListener(v -> selectLanguage(3));
     }
 }
