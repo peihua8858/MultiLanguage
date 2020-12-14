@@ -91,7 +91,6 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
 
     @Override
     public void visitEnd() {
-        super.visitEnd();
         Set<Map.Entry<String, OverrideMethodVisitor>> addEntries = METHOD_VISITOR.entrySet();
         for (Map.Entry<String, OverrideMethodVisitor> entry : addEntries) {
             final OverrideMethodVisitor methodVisitor = entry.getValue();
@@ -106,6 +105,7 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
                         "or you can add this full class name to plugin extension.overwriteClass");
             }
         }
+        super.visitEnd();
     }
 
     public static boolean hasMethod(String methodName) {

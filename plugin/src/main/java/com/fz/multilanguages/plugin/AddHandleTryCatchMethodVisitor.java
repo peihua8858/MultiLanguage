@@ -1,13 +1,10 @@
 package com.fz.multilanguages.plugin;
 
-import org.objectweb.asm.Handle;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.AdviceAdapter;
-
-import java.util.Map;
 
 /**
  * 添加TryCatchMethod
@@ -52,8 +49,8 @@ public class AddHandleTryCatchMethodVisitor extends AdviceAdapter {
     }
 
     @Override
-    protected void onMethodExit(int i) {
-        super.onMethodExit(i);
+    protected void onMethodExit(int opcode) {
+        super.onMethodExit(opcode);
         if (returnType == Type.VOID_TYPE) {
             mv.visitLabel(l1);
             Label l3 = new Label();
