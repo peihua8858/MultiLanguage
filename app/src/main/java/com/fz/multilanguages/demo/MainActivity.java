@@ -1,15 +1,23 @@
 package com.fz.multilanguages.demo;
 
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ShortcutManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+
 import com.fz.multilanguages.demo.utils.LocalManageUtil;
 import com.im.sdk.IMSdk;
+import com.socks.library.KLog;
 
 public class MainActivity extends BaseActivity {
 
@@ -31,6 +39,27 @@ public class MainActivity extends BaseActivity {
         //
         setValue();
         clickItem(startNewActivity);
+        KLog.e("uri:" + getIntent().getData());
+    }
+
+    private void addShortcut() {
+        Intent launchIntent = new Intent(this, MainActivity.class);
+        launchIntent.setData(Uri.parse("https://www.qq.com"));
+        ShortcutInfoCompat pinShortcutInfo =
+                new ShortcutInfoCompat.Builder(this, System.currentTimeMillis() + "")
+                        .setShortLabel("测试快捷方式").setIntent(launchIntent).build();
+        Intent pinnedShortcutCallbackIntent =
+                ShortcutManagerCompat.createShortcutResultIntent(this, pinShortcutInfo);
+        PendingIntent successCallback = PendingIntent.getBroadcast(this, 0,
+                pinnedShortcutCallbackIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        ShortcutManagerCompat.requestPinShortcut(this, pinShortcutInfo,
+                successCallback.getIntentSender());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        KLog.e("uri:" + intent.getData());
     }
 
     private void initView() {
@@ -39,11 +68,19 @@ public class MainActivity extends BaseActivity {
         startSettingActivity = findViewById(R.id.btn_3);
         startNewService = findViewById(R.id.btn_4);
         startNewIm = findViewById(R.id.btn_5);
+        findViewById(R.id.btn_6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addShortcut();
+            }
+        });
         //
         tvSystemLanguage = findViewById(R.id.tv_system_language);
         tvUserSelectLanguage = findViewById(R.id.tv_user_select);
         tvValue = findViewById(R.id.tv_3);
         tvValue2 = findViewById(R.id.tv_4);
+
+
         //
         startNewActivity.setOnClickListener(v -> SecondActivity.enter(MainActivity.this));
         //

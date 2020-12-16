@@ -6,6 +6,23 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="IMToolbarStyle">@style/IMToolbarStyle</item>
     </style>
-
+    <style name="IMToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="layout_collapseMode">pin</item>
+        <item name="navigationIcon">@drawable/im_ic_arrow_back_white_24dp</item>
+        <item name="layout_scrollFlags">scroll|enterAlways</item>
+        <item name="title">@string/app_name</item>
+        <item name="titleTextAppearance">@style/IMToolbarTitleTextAppearance</item>
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="popupTheme">@style/IMToolbarPopupTheme</item>
+        <item name="actionMenuTextAppearance">@style/IMActionMenuTextAppearance</item>
+        <item name="android:actionMenuTextAppearance">@style/IMActionMenuTextAppearance</item>
+    </style>
 </resources>
