@@ -133,11 +133,13 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions);
         if ((hookMethod.contains(name) || hasHookMethodClass)) {
             logger.printlnLog("start hook className>" + mClassName + " Method name>" + name);
-            if (exceptionHandleClass != null && exceptionHandleMethod != null) {
-                return new AddHandleTryCatchMethodVisitor(methodVisitor, mClassName, access, name, descriptor,
-                        exceptionHandleClass, exceptionHandleMethod);
-            }
-            return new AddDynamicTryCatchMethodVisitor(methodVisitor, mClassName, access, name, descriptor);
+//            if (exceptionHandleClass != null && exceptionHandleMethod != null) {
+//                return new AddHandleTryCatchMethodVisitor(methodVisitor, mClassName, access, name, descriptor,
+//                        exceptionHandleClass, exceptionHandleMethod);
+//            }
+            return new TryCatchHookAdapter(methodVisitor, mClassName, access, name, descriptor,
+                    exceptionHandleClass, exceptionHandleMethod);
+//            return new AddDynamicTryCatchMethodVisitor(methodVisitor, mClassName, access, name, descriptor);
         } else {
             return methodVisitor;
         }

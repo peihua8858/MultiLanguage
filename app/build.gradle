@@ -78,5 +78,5 @@ multiLanguages {
                     "clickItem","test1"
             ]
     ]
-//    exceptionHandler = ["com.fz.multilanguages.demo.ExceptionUtils": "uploadCatchedException"]
+    exceptionHandler = ["com.fz.multilanguages.demo.ExceptionUtils": "uploadCatchException"]
 }
