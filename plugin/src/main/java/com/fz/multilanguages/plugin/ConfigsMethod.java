@@ -70,8 +70,8 @@ final class ConfigsMethod {
         }
         return ("android/support/v4/app/FragmentActivity".equals(superClassName)
                 || "android/support/v7/app/AppCompatActivity".equals(superClassName)
-                || "android/app/Activity".equals(superClassName)
-                || isAndroidxActivity(superClassName))
+                || isAndroidxActivity(superClassName)
+                || "android/app/Activity".equals(superClassName))
                 && !isAndroidxPackageName(className) && !isAndroidSupportPackageName(className);
     }
 

@@ -1,10 +1,13 @@
 package com.fz.multilanguages.plugin
 
 import com.android.build.api.transform.*
+import com.android.build.gradle.AppExtension
 import com.android.build.gradle.internal.pipeline.TransformManager
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 import org.objectweb.asm.ClassReader
 
 import java.util.jar.JarEntry
@@ -12,11 +15,36 @@ import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
 
-class MultiLanguagesTransform extends Transform implements ILogger {
+class MultiLanguagesTransform extends Transform implements ILogger, Plugin<Project> {
+    public static final String PLUGIN_NAME = "multiLanguages"
     private PluginExtension pluginExtension
+//
+//    MultiLanguagesTransform() {
+//    }
+//
+//    MultiLanguagesTransform(PluginExtension pluginExtension) {
+//        this.pluginExtension = pluginExtension
+//    }
 
-    MultiLanguagesTransform(PluginExtension pluginExtension) {
+    @Override
+    void apply(Project project) {
+        project.dependencies {
+            implementation 'com.fz.multilanguages:multi-languages:1.0.6'
+        }
+        //注册plugin参数插件
+        def pluginExtension = project.extensions.findByType(PluginExtension)
+        if (pluginExtension == null) {
+            project.extensions.create(PLUGIN_NAME, PluginExtension)
+            pluginExtension = project.extensions.findByType(PluginExtension)
+        }
+        //没有开启返回（默认开启）
+        if (!pluginExtension.enable) {
+            return
+        }
         this.pluginExtension = pluginExtension
+        //注册插桩插件
+        def android = project.extensions.getByType(AppExtension)
+        android.registerTransform(this)
     }
 
     @Override
@@ -98,14 +126,6 @@ class MultiLanguagesTransform extends Transform implements ILogger {
                     def classReader = new ClassReader(file.bytes)
                     FileOutputStream fos = new FileOutputStream(
                             file.parentFile.absolutePath + File.separator + name)
-//                        PluginExtensionEntity extension = new PluginExtensionEntity()
-//                        extension.setEnable(pluginExtension.enable)
-//                        extension.setHookPoint(pluginExtension.hookPoint)
-//                        extension.setExceptionHandler(pluginExtension.exceptionHandler)
-//                        extension.setOverwriteClass(pluginExtension.overwriteClass)
-//                        extension.setAttachApplication(pluginExtension.attachApplication)
-//                        extension.setAttachIntentService(pluginExtension.attachIntentService)
-//                        extension.setAttachService(pluginExtension.attachService)
                     fos.write(ClassWriteVisitor.classWriteVisitor(classReader, this, createProperties(), name))
                     fos.close()
                 }
@@ -161,14 +181,6 @@ class MultiLanguagesTransform extends Transform implements ILogger {
                     if (checkClassFile(entryName)) {
                         jarOutputStream.putNextEntry(zipEntry)
                         def classReader = new ClassReader(IOUtils.toByteArray(inputStream))
-//                        PluginExtensionEntity extension = new PluginExtensionEntity()
-//                        extension.setEnable(pluginExtension.enable)
-//                        extension.setHookPoint(pluginExtension.hookPoint)
-//                        extension.setExceptionHandler(pluginExtension.exceptionHandler)
-//                        extension.setOverwriteClass(pluginExtension.overwriteClass)
-//                        extension.setAttachApplication(pluginExtension.attachApplication)
-//                        extension.setAttachIntentService(pluginExtension.attachIntentService)
-//                        extension.setAttachService(pluginExtension.attachService)
                         jarOutputStream.write(ClassWriteVisitor.classWriteVisitor(classReader, this, createProperties(), entryName))
                     } else {
                         jarOutputStream.putNextEntry(zipEntry)
@@ -211,4 +223,5 @@ class MultiLanguagesTransform extends Transform implements ILogger {
     void printlnLog(Object value) {
         println(value)
     }
+
 }

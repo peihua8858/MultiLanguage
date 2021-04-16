@@ -10,11 +10,11 @@ repositories {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.fz.multilanguages.demo"
         minSdkVersion 18
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -52,16 +52,17 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.annotation:annotation:1.2.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     testImplementation 'junit:junit:4.13.1'
-    implementation "com.squareup.okhttp3:okhttp:3.14.9"
+    implementation "com.squareup.okhttp3:okhttp:4.9.0"
 //    implementation project(':library')
 //    implementation "com.github.jokar:multi-languages:0.0.7"
     //IMSdk
     implementation 'com.im.sdk:imsdk-androidx:1.1.20'
-    implementation "com.facebook.android:facebook-android-sdk:7.1.0"
+    implementation "com.facebook.android:facebook-android-sdk:9.1.0"
+    implementation 'com.github.tbruyelle:rxpermissions:0.12'
 }
 
 multiLanguages {
@@ -69,15 +70,15 @@ multiLanguages {
     overwriteClass = ["com.fz.multilanguages.demo.BaseActivity"
                       ,"com.im.sdk.ui.ImBaseActivity"
                       ,"com.fz.multilanguages.demo.app.MultiLanguagesApp"]
-    hookPoint = [
-            "com.fz.multilanguages.demo.SettingActivity": [
-                    "selectLanguage",
-                    "enter",
-                    "setClick"
-            ],
-            "com.fz.multilanguages.demo.BaseActivity": [
-                    "clickItem","test1"
-            ]
-    ]
-    exceptionHandler = ["com.fz.multilanguages.demo.ExceptionUtils": "uploadCatchException"]
+//    hookPoint = [
+//            "com.fz.multilanguages.demo.SettingActivity": [
+//                    "selectLanguage",
+//                    "enter",
+//                    "setClick"
+//            ],
+//            "com.fz.multilanguages.demo.BaseActivity": [
+//                    "clickItem","test1"
+//            ]
+//    ]
+//    exceptionHandler = ["com.fz.multilanguages.demo.ExceptionUtils": "uploadCatchException"]
 }

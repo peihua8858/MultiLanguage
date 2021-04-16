@@ -1,14 +1,12 @@
 package com.fz.multilanguages.demo;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ShortcutManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -16,7 +14,9 @@ import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 
 import com.fz.multilanguages.demo.utils.LocalManageUtil;
+import com.fz.toast.ToastCompat;
 import com.im.sdk.IMSdk;
+import com.luck.picture.lib.permissions.RxPermissions;
 import com.socks.library.KLog;
 
 public class MainActivity extends BaseActivity {
@@ -44,6 +44,7 @@ public class MainActivity extends BaseActivity {
 
     private void addShortcut() {
         Intent launchIntent = new Intent(this, MainActivity.class);
+        launchIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
         launchIntent.setData(Uri.parse("https://www.qq.com"));
         ShortcutInfoCompat pinShortcutInfo =
                 new ShortcutInfoCompat.Builder(this, System.currentTimeMillis() + "")
@@ -68,11 +69,15 @@ public class MainActivity extends BaseActivity {
         startSettingActivity = findViewById(R.id.btn_3);
         startNewService = findViewById(R.id.btn_4);
         startNewIm = findViewById(R.id.btn_5);
-        findViewById(R.id.btn_6).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addShortcut();
-            }
+        findViewById(R.id.btn_6).setOnClickListener(v -> {
+            new RxPermissions(this).request(Manifest.permission.INSTALL_SHORTCUT)
+                    .subscribe(result -> {
+                        if (result) {
+                            addShortcut();
+                        } else {
+                            ToastCompat.showMessage("权限被拒绝。");
+                        }
+                    });
         });
         //
         tvSystemLanguage = findViewById(R.id.tv_system_language);

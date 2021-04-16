@@ -21,7 +21,7 @@ import java.util.Set;
  * @date 2020/1/10 9:30
  */
 public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
-    private final static HashMap<String, OverrideMethodVisitor> METHOD_VISITOR = new HashMap<>();
+    private final HashMap<String, OverrideMethodVisitor> methodVisitors = new HashMap<>();
     private String superClassName;
     private String mClassName;
     private List<String> overwriteClass;
@@ -55,7 +55,7 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
                 e.printStackTrace();
             }
             if (methodVisitor != null) {
-                METHOD_VISITOR.put(method, methodVisitor);
+                this.methodVisitors.put(method, methodVisitor);
             }
         }
         Map<String, String> exceptionHandler = extension.getExceptionHandler();
@@ -91,55 +91,53 @@ public class OverrideClassWriteVisitor extends ClassVisitor implements Opcodes {
 
     @Override
     public void visitEnd() {
-        Set<Map.Entry<String, OverrideMethodVisitor>> addEntries = METHOD_VISITOR.entrySet();
-        for (Map.Entry<String, OverrideMethodVisitor> entry : addEntries) {
-            final OverrideMethodVisitor methodVisitor = entry.getValue();
-            final String method = entry.getKey();
-            final boolean isOverrideMethod = methodVisitor.isOverrideMethod(mClassName, superClassName);
-            logger.printlnLog("start override  method " + method + " to " + fileName + ",isOverrideMethod " + isOverrideMethod);
-            if (isOverrideMethod) {
-                boolean result = methodVisitor.methodVisitor(classWriter, mClassName, superClassName, fileName);
-                logger.printlnLog("override method " + method + " to " + fileName + (result ? " success." : " failure."));
-            } else {
-                slf4jLogger.error("skip " + fileName + ", you should add " + entry.getKey() + " by your self, " +
-                        "or you can add this full class name to plugin extension.overwriteClass");
+        if (ConfigsMethod.needAddOrOverride(mClassName, superClassName, extension)) {
+            Set<Map.Entry<String, OverrideMethodVisitor>> addEntries = methodVisitors.entrySet();
+            for (Map.Entry<String, OverrideMethodVisitor> entry : addEntries) {
+                final OverrideMethodVisitor methodVisitor = entry.getValue();
+                final String method = entry.getKey();
+                final boolean isOverrideMethod = methodVisitor.isOverrideMethod(mClassName, superClassName);
+                logger.printlnLog("start override  method " + method + " to " + fileName + ",isOverrideMethod " + isOverrideMethod);
+                if (isOverrideMethod) {
+                    boolean result = methodVisitor.methodVisitor(classWriter, mClassName, superClassName, fileName);
+                    logger.printlnLog("override method " + method + " to " + fileName + (result ? " success." : " failure."));
+                } else {
+                    slf4jLogger.error("skip " + fileName + ", you should add " + entry.getKey() + " by your self, " +
+                            "or you can add this full class name to plugin extension.overwriteClass");
+                }
             }
         }
         super.visitEnd();
     }
 
-    public static boolean hasMethod(String methodName) {
-        return METHOD_VISITOR.containsKey(methodName);
+    public boolean hasMethod(String methodName) {
+        return methodVisitors.containsKey(methodName);
     }
+
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature,
                                      String[] exceptions) {
         if (access == Opcodes.ACC_NATIVE) {
             return super.visitMethod(access, name, descriptor, signature, exceptions);
         }
-        logger.printlnLog("start visitMethod className>" + mClassName + " Method name>"
-                + name + ",hasHookMethodClass:" + hasHookMethodClass);
         if (ConfigsMethod.needAddOrOverride(mClassName, superClassName, extension) && hasMethod(name)) {
             try {
-                OverrideMethodVisitor overrideMethodVisitor = METHOD_VISITOR.get(name);
+                logger.printlnLog("visitMethod className>" + mClassName + " Method name>"
+                        + name);
+                OverrideMethodVisitor overrideMethodVisitor = methodVisitors.get(name);
                 overrideMethodVisitor.setNeedAddMethod(true);
                 return overrideMethodVisitor.visitMethod(classWriter, mClassName, superClassName, overwriteClass,
                         access, name, descriptor, signature, exceptions);
             } catch (Exception e) {
                 e.printStackTrace();
-                slf4jLogger.error("override method " + name + " to " + fileName + "failure, error:" + e.getMessage());
+                slf4jLogger.error("visitMethod className>" + mClassName + "  method name> " + name + " to " + fileName + "failure, error:" + e.getMessage());
             }
         }
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions);
         if ((hookMethod.contains(name) || hasHookMethodClass)) {
-            logger.printlnLog("start hook className>" + mClassName + " Method name>" + name);
-//            if (exceptionHandleClass != null && exceptionHandleMethod != null) {
-//                return new AddHandleTryCatchMethodVisitor(methodVisitor, mClassName, access, name, descriptor,
-//                        exceptionHandleClass, exceptionHandleMethod);
-//            }
+            logger.printlnLog("start hook className>" + mClassName + " Method name>" + name + ",hasHookMethodClass:" + hasHookMethodClass);
             return new TryCatchHookAdapter(methodVisitor, mClassName, access, name, descriptor,
                     exceptionHandleClass, exceptionHandleMethod);
-//            return new AddDynamicTryCatchMethodVisitor(methodVisitor, mClassName, access, name, descriptor);
         } else {
             return methodVisitor;
         }
