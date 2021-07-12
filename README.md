@@ -16,9 +16,21 @@
 ### **使用**
 
 - 引入gradle plugin
-    ```
-    classpath 'com.fz.multilanguages:multi-languages-plugin:1.1.0'
-    ```
+### 添加存储库
+```
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+### 添加依赖
+ ```
+   dependencies {
+            implementation 'com.github.peihua8858.MultiLanguage:plugin:1.0.1'
+   	}
+```
 - app ```buidle.gradle``` 文件引入plugin
     ```
     apply plugin: 'multi-languages'
@@ -32,13 +44,14 @@
         overwriteClass = ["com.fz.multilanguages.BaseActivity"] 
     }
     ```
-- 导入```Library```
-    ```
-    implementation 'com.fz.multilanguages:multi-languages:1.0.6'
-    ```
+- ### 添加项目级依赖
+```
+   dependencies {
+            implementation 'com.github.peihua8858.MultiLanguage:languages:1.0.1'
+```
 
 - application init
-    ```
+```
    public class MultiLanguagesApp extends Application {
     @Override
     protected void attachBaseContext(Context base) {
@@ -67,7 +80,7 @@
         });
     }
     }
-    ```
+```
     [LocalManageUtil](./app/src/main/java/com/fz/multilanguages/demo/utils/LocalManageUtil.java)里做的是保存选择的语言设置
 
 
@@ -84,12 +97,12 @@
 
 - 如果需要强制重写可以在在插件配置里```overwriteClass```里加上全路径包名后插件覆盖重写 
 
-    ```
+```
         multiLanguages {
         enable = true
         overwriteClass = ["com.fz.multilanguages.BaseActivity"]
         }
-    ```
+```
 
 ### **locales列表**
 
