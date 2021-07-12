@@ -6,16 +6,17 @@ buildscript {
 
     repositories {
         mavenLocal()
+        google()
+        mavenCentral()
+        maven {url "https://plugins.gradle.org/m2/" }
         maven {
             url uri('repo')
         }
-        maven {
-            url "http://" + String.valueOf(maven_address) + "/repository/maven-public/"
-        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
-        classpath 'com.fz.multilanguages:multi-languages-plugin:1.0.0-debug'
+        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath "com.github.dcendents:android-maven-gradle-plugin:2.1"
+//        classpath 'com.fz.multilanguages:multi-languages-plugin:1.0.0-debug'
 //        classpath 'com.fz.multilanguages:multi-languages-plugin:1.0.8-SNAPSHOT'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -25,11 +26,11 @@ buildscript {
 allprojects {
     repositories {
         mavenLocal()
+        google()
+        mavenCentral()
+        maven {url "https://plugins.gradle.org/m2/" }
         maven {
             url uri('repo')
-        }
-        maven {
-            url "http://" + String.valueOf(maven_address) + "/repository/maven-public/"
         }
     }
 }
