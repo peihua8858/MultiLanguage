@@ -28,9 +28,6 @@ class MultiLanguagesTransform extends Transform implements ILogger, Plugin<Proje
 
     @Override
     void apply(Project project) {
-        project.dependencies {
-            implementation 'com.fz.multilanguages:multi-languages:1.0.6'
-        }
         //注册plugin参数插件
         def pluginExtension = project.extensions.findByType(PluginExtension)
         if (pluginExtension == null) {
