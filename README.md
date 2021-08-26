@@ -1,4 +1,4 @@
-
+[![](https://jitpack.io/v/peihua8858/MultiLanguage.svg)](https://jitpack.io/#peihua8858/MultiLanguage)
 ### Android 多语言切换（兼容8.0+） 1.0版本，一句代码完成多语言切换，现在支持第三方包里多语言切换（前提是有对应的语言资源）
 
 
